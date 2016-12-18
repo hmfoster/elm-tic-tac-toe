@@ -14,6 +14,15 @@ convertBoard board =
     Array.map Array.fromList (Array.fromList board)
 
 
+getMarker : ArrayBoard -> Position -> Turn
+getMarker board position =
+    let
+        row =
+            getCurrentRow board position
+    in
+        getValFromRow row position.x
+
+
 getCurrentRow : ArrayBoard -> Position -> Array Turn
 getCurrentRow board position =
     let
@@ -59,12 +68,3 @@ getRDiagonal board =
 getValFromRow : ArrayRow -> Int -> Turn
 getValFromRow row ind =
     Maybe.withDefault N (Array.get ind row)
-
-
-getMarker : ArrayBoard -> Position -> Turn
-getMarker board position =
-    let
-        row =
-            getCurrentRow board position
-    in
-        getValFromRow row position.x

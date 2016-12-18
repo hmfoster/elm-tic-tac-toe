@@ -13,53 +13,6 @@ import Maybe
 import Types exposing (..)
 
 
-checkForWinner : Board -> Position -> Turn -> Bool
-checkForWinner board position marker =
-    let
-        convertedBoard =
-            convertBoard board
-
-        horizontal =
-            checkHorizontal convertedBoard position marker
-
-        vertical =
-            checkVertical convertedBoard position marker
-
-        diagonal =
-            checkDiagonal convertedBoard marker
-    in
-        horizontal || vertical || diagonal
-
-
-isWinner : ArrayRow -> Turn -> Bool
-isWinner values marker =
-    Array.foldl (\m curr -> (m == marker) && curr) True values
-
-
-checkHorizontal : ArrayBoard -> Position -> Turn -> Bool
-checkHorizontal board position marker =
-    let
-        row =
-            getCurrentRow board position
-    in
-        isWinner row marker
-
-
-checkVertical : ArrayBoard -> Position -> Turn -> Bool
-checkVertical board position marker =
-    let
-        column =
-            Array.map (\row -> getValFromRow row position.x) board
-    in
-        isWinner column marker
-
-
-checkDiagonal : ArrayBoard -> Turn -> Bool
-checkDiagonal board marker =
-    (isWinner (getLDiagonal board) marker)
-        || (isWinner (getRDiagonal board) marker)
-
-
 takeTurn : Model -> Position -> Model
 takeTurn model position =
     let
@@ -113,3 +66,50 @@ placeMarker board position marker =
             Array.set position.y newRow (convertBoard board)
     in
         Array.toList (Array.map Array.toList newBoard)
+
+
+checkForWinner : Board -> Position -> Turn -> Bool
+checkForWinner board position marker =
+    let
+        convertedBoard =
+            convertBoard board
+
+        horizontal =
+            checkHorizontal convertedBoard position marker
+
+        vertical =
+            checkVertical convertedBoard position marker
+
+        diagonal =
+            checkDiagonal convertedBoard marker
+    in
+        horizontal || vertical || diagonal
+
+
+checkHorizontal : ArrayBoard -> Position -> Turn -> Bool
+checkHorizontal board position marker =
+    let
+        row =
+            getCurrentRow board position
+    in
+        isWinner row marker
+
+
+checkVertical : ArrayBoard -> Position -> Turn -> Bool
+checkVertical board position marker =
+    let
+        column =
+            Array.map (\row -> getValFromRow row position.x) board
+    in
+        isWinner column marker
+
+
+checkDiagonal : ArrayBoard -> Turn -> Bool
+checkDiagonal board marker =
+    (isWinner (getLDiagonal board) marker)
+        || (isWinner (getRDiagonal board) marker)
+
+
+isWinner : ArrayRow -> Turn -> Bool
+isWinner values marker =
+    Array.foldl (\m curr -> (m == marker) && curr) True values
