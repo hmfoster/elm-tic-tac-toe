@@ -74,9 +74,9 @@ takeTurn model position =
             model.winner || checkForWinner newBoard position marker
     in
         if currentMarker == N then
-            Model newTurn newBoard winner
+            Model newTurn newBoard winner (model.numTurns + 1)
         else
-            Model model.turn model.board winner
+            model
 
 
 switchTurn : Turn -> Turn

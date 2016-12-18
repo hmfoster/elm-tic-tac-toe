@@ -34,4 +34,5 @@ type alias Model =
     { turn : Turn
     , board : Board
     , winner : Bool
+    , numTurns : Int
     }

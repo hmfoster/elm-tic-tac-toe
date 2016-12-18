@@ -25,7 +25,7 @@ main =
 
 init : ( Model, Cmd Msg )
 init =
-    ( Model X newBoard False, Cmd.none )
+    ( Model X newBoard False 0, Cmd.none )
 
 
 
@@ -47,7 +47,7 @@ update msg model =
                 ( takeTurn model position, Cmd.none )
 
         NewGame ->
-            ( Model X newBoard False, Cmd.none )
+            ( Model X newBoard False 0, Cmd.none )
 
 
 
@@ -74,6 +74,8 @@ getMessage model =
     in
         if model.winner then
             h2 [] [ text ((toString winner) ++ " Wins!") ]
+        else if model.numTurns == 9 then
+            h2 [] [ text ("It's a Draw!") ]
         else
             h2 [] [ text ("Go " ++ toString model.turn) ]
 
