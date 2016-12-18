@@ -104,37 +104,46 @@ row ( y, row ) =
             List.indexedMap getPosition row
     in
         tr []
-            (List.map marker positionedRow)
+            (List.map space positionedRow)
 
 
-marker : ( Position, Turn ) -> Html Msg
-marker ( position, markerType ) =
-    td [ E.onClick (PlaceMarker position) ] [ piece markerType ]
+space : ( Position, Turn ) -> Html Msg
+space ( position, markerType ) =
+    td [ E.onClick (PlaceMarker position) ]
+        [ Svg.svg [ height "50", width "50" ]
+            [ piece
+            , text_ [ x "10", y "40", fontSize "50" ]
+                [ text (marker markerType) ]
+            ]
+        ]
 
 
-piece : Turn -> Html Msg
-piece markerType =
+piece : Html Msg
+piece =
+    rect
+        [ width "50"
+        , height "50"
+        , fill "white"
+        , stroke "black"
+        , strokeWidth "5"
+        ]
+        []
+
+
+marker : Turn -> String
+marker markerType =
     case markerType of
         X ->
-            Svg.svg [ height "50", width "50" ]
-                [ rect [ width "50", height "50", fill "white", stroke "black", strokeWidth "5" ] []
-                , text_ [ x "10", y "40", fontSize "50" ] [ text "X" ]
-                ]
+            "X"
 
         O ->
-            Svg.svg [ height "50", width "50" ]
-                [ rect [ width "50", height "50", fill "white", stroke "black", strokeWidth "5" ] []
-                , text_ [ x "10", y "40", fontSize "50" ] [ text "O" ]
-                ]
+            "O"
 
         N ->
-            Svg.svg [ height "50", width "50" ]
-                [ rect [ width "50", height "50", fill "white", stroke "black", strokeWidth "5" ] []
-                ]
+            ""
 
 
 
--- td [ E.onClick (Debug.log "cat") ] [ text piece ]
 -- Subscription
 
 

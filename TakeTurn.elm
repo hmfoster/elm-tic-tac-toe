@@ -1,6 +1,13 @@
 module TakeTurn exposing (takeTurn, checkForWinner)
 
-import Board exposing (convertBoard, getCurrentRow, getValFromRow, getLDiagonal, getRDiagonal)
+import Board
+    exposing
+        ( convertBoard
+        , getCurrentRow
+        , getValFromRow
+        , getLDiagonal
+        , getRDiagonal
+        )
 import Array exposing (..)
 import Maybe
 import Types exposing (..)
@@ -49,7 +56,8 @@ checkVertical board position marker =
 
 checkDiagonal : ArrayBoard -> Turn -> Bool
 checkDiagonal board marker =
-    (isWinner (getLDiagonal board) marker) || (isWinner (getRDiagonal board) marker)
+    (isWinner (getLDiagonal board) marker)
+        || (isWinner (getRDiagonal board) marker)
 
 
 takeTurn : Model -> Position -> Model
