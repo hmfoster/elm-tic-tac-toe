@@ -17,7 +17,7 @@ takeTurn : Model -> Position -> Model
 takeTurn model position =
     let
         currentRow =
-            getCurrentRow (convertBoard model.board) position
+            getCurrentRow position.y (convertBoard model.board)
 
         currentMarker =
             Maybe.withDefault N (Array.get position.x currentRow)
@@ -57,7 +57,7 @@ placeMarker : Board -> Position -> Turn -> Board
 placeMarker board position marker =
     let
         row =
-            getCurrentRow (convertBoard board) position
+            getCurrentRow position.y (convertBoard board)
 
         newRow =
             Array.set position.x marker row
@@ -90,7 +90,7 @@ checkHorizontal : ArrayBoard -> Position -> Turn -> Bool
 checkHorizontal board position marker =
     let
         row =
-            getCurrentRow board position
+            getCurrentRow position.y board
     in
         isWinner row marker
 
@@ -99,7 +99,7 @@ checkVertical : ArrayBoard -> Position -> Turn -> Bool
 checkVertical board position marker =
     let
         column =
-            Array.map (\row -> getValFromRow row position.x) board
+            Array.map (\row -> getValFromRow position.x row) board
     in
         isWinner column marker
 

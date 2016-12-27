@@ -4,67 +4,48 @@ import Types exposing (..)
 import Array exposing (..)
 
 
+newRow : Row
+newRow =
+    List.repeat 3 N
+
+
 newBoard : Board
 newBoard =
-    List.repeat 3 (List.repeat 3 N)
+    List.repeat 3 newRow
 
 
 convertBoard : Board -> ArrayBoard
-convertBoard board =
-    Array.map Array.fromList (Array.fromList board)
+convertBoard =
+    Array.fromList
+        >> Array.map Array.fromList
 
 
-getMarker : ArrayBoard -> Position -> Turn
-getMarker board position =
-    let
-        row =
-            getCurrentRow board position
-    in
-        getValFromRow row position.x
+getValFromRow : Int -> ArrayRow -> Turn
+getValFromRow ind =
+    Array.get ind >> Maybe.withDefault N
 
 
-getCurrentRow : ArrayBoard -> Position -> Array Turn
-getCurrentRow board position =
-    let
-        arrayRow =
-            Array.get position.y board
+getMarker : Position -> ArrayBoard -> Turn
+getMarker position =
+    getCurrentRow position.y
+        >> getValFromRow position.x
 
-        defaultRow =
-            Array.repeat 3 N
-    in
-        Maybe.withDefault defaultRow arrayRow
+
+getCurrentRow : Int -> ArrayBoard -> Array Turn
+getCurrentRow rowInd =
+    Array.get rowInd >> Maybe.withDefault (Array.fromList newRow)
 
 
 getLDiagonal : ArrayBoard -> ArrayRow
-getLDiagonal board =
-    let
-        a =
-            getMarker board { x = 0, y = 0 }
+getLDiagonal =
+    Array.indexedMap (\i row -> getValFromRow i row)
 
-        b =
-            getMarker board { x = 1, y = 1 }
 
-        c =
-            getMarker board { x = 2, y = 2 }
-    in
-        Array.fromList [ a, b, c ]
+reverseArray : Array a -> Array a
+reverseArray =
+    Array.foldr Array.push Array.empty
 
 
 getRDiagonal : ArrayBoard -> ArrayRow
-getRDiagonal board =
-    let
-        a =
-            getMarker board { x = 0, y = 2 }
-
-        b =
-            getMarker board { x = 1, y = 1 }
-
-        c =
-            getMarker board { x = 2, y = 0 }
-    in
-        Array.fromList [ a, b, c ]
-
-
-getValFromRow : ArrayRow -> Int -> Turn
-getValFromRow row ind =
-    Maybe.withDefault N (Array.get ind row)
+getRDiagonal =
+    reverseArray >> Array.indexedMap (\i row -> getValFromRow i row)
