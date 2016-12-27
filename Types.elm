@@ -36,3 +36,8 @@ type alias Model =
     , winner : Bool
     , numTurns : Int
     }
+
+
+type Msg
+    = PlaceMarker Position
+    | NewGame
